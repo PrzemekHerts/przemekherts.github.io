@@ -1,0 +1,211 @@
+/* Claude Light Theme CSS */
+/* Based on Claude.ai's light color scheme */
+
+:root {
+  /* Primary colors from Claude's light theme */
+  --claude-bg-primary: #FFFFFF;
+  --claude-bg-secondary: #F5F5F5;
+  --claude-bg-tertiary: #EBEBEB;
+  
+  /* Text colors */
+  --claude-text-primary: #2C2C2C;
+  --claude-text-secondary: #5C5C5C;
+  --claude-text-tertiary: #8E8E8E;
+  
+  /* Accent colors */
+  --claude-accent: #CD7C4B;
+  --claude-accent-hover: #B8653A;
+  
+  /* Border colors */
+  --claude-border-light: #E5E5E5;
+  --claude-border-medium: #D4D4D4;
+  
+  /* Code block colors */
+  --claude-code-bg: #F5F5F5;
+  --claude-code-border: #E0E0E0;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--claude-bg-primary);
+  color: var(--claude-text-primary);
+  font-family: 'Tiempos Text', 'Georgia', 'Times New Roman', serif;
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--claude-text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2rem;
+  border-bottom: 2px solid var(--claude-border-light);
+  padding-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--claude-text-primary);
+}
+
+/* Links */
+a {
+  color: var(--claude-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--claude-accent-hover);
+  text-decoration: underline;
+}
+
+/* Code blocks */
+code {
+  background-color: var(--claude-code-bg);
+  color: var(--claude-text-primary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Söhne Mono', 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 0.9em;
+  border: 1px solid var(--claude-code-border);
+}
+
+pre {
+  background-color: var(--claude-code-bg);
+  border: 1px solid var(--claude-code-border);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+pre code {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* Lists */
+ul, ol {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+  color: var(--claude-text-primary);
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid var(--claude-accent);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--claude-text-secondary);
+  font-style: italic;
+  background-color: var(--claude-bg-secondary);
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  background-color: var(--claude-bg-primary);
+}
+
+th, td {
+  border: 1px solid var(--claude-border-light);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+th {
+  background-color: var(--claude-bg-secondary);
+  color: var(--claude-text-primary);
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: var(--claude-bg-secondary);
+}
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid var(--claude-border-light);
+  margin: 2rem 0;
+}
+
+/* Container for content */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--claude-bg-primary);
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+/* Input and button styles (if you add forms later) */
+input, textarea, select {
+  background-color: var(--claude-bg-primary);
+  color: var(--claude-text-primary);
+  border: 1px solid var(--claude-border-medium);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-family: inherit;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--claude-accent);
+}
+
+button {
+  background-color: var(--claude-accent);
+  color: var(--claude-bg-primary);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--claude-accent-hover);
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--claude-accent);
+  color: var(--claude-bg-primary);
+}
+
+::-moz-selection {
+  background-color: var(--claude-accent);
+  color: var(--claude-bg-primary);
+}
