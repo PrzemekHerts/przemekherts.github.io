@@ -75,6 +75,78 @@
       transition: all 0.2s;
       flex-shrink: 0;
     }
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 34px; height: 34px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 7px 8px;
+      flex-shrink: 0;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1.5px;
+      background: var(--text-3);
+      border-radius: 2px;
+      transition: all 0.25s;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    /* ── MOBILE DRAWER ── */
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0;
+      z-index: 99;
+      background: rgba(2,8,23,0.97);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px 20px;
+      flex-direction: column;
+      gap: 0;
+    }
+    .nav-drawer.open { display: flex; }
+    body.light .nav-drawer { background: rgba(248,250,252,0.97); }
+    .nav-drawer a {
+      color: var(--text-3);
+      text-decoration: none;
+      font-size: 13px;
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border-sub);
+      transition: color 0.2s;
+    }
+    .nav-drawer a:last-of-type { border-bottom: none; }
+    .nav-drawer a:hover { color: var(--text-2); }
+    .nav-drawer .drawer-theme {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0 0;
+    }
+    .nav-drawer .drawer-theme span {
+      color: var(--text-4);
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
     .theme-toggle:hover { border-color: #475569; color: var(--text-2); }
 
     /* ── LIGHT THEME ── */
@@ -261,12 +333,44 @@
       <span id="themeIcon" style="font-family:'DM Mono',monospace;font-size:15px;line-height:1">&#x2600;</span>
     </button>
   </div>
+  <!-- Hamburger (mobile only) -->
+  <button class="nav-hamburger" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile nav drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#about"   onclick="closeDrawer()">About</a>
+  <a href="#progress" onclick="closeDrawer()">Progress</a>
+  <a href="#balance"  onclick="closeDrawer()">Balance</a>
+  <a href="#calendar" onclick="closeDrawer()">Calendar</a>
+  <a href="#links"    onclick="closeDrawer()">Links</a>
+  <div class="drawer-theme">
+    <span>Theme</span>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" style="margin:0">
+      <span id="themeIconMobile" style="font-family:'DM Mono',monospace;font-size:15px;line-height:1">&#x2600;</span>
+    </button>
+  </div>
+</div>
+
 <script>
   function toggleTheme() {
     const light = document.body.classList.toggle('light');
-    document.getElementById('themeIcon').textContent = light ? '\u263E' : '\u2600';
+    const icon = light ? '\u263E' : '\u2600';
+    document.getElementById('themeIcon').textContent = icon;
+    document.getElementById('themeIconMobile').textContent = icon;
     document.dispatchEvent(new CustomEvent('themechange', { detail: { light } }));
+  }
+  function toggleDrawer() {
+    const drawer = document.getElementById('navDrawer');
+    const btn    = document.getElementById('hamburgerBtn');
+    const open   = drawer.classList.toggle('open');
+    btn.classList.toggle('open', open);
+  }
+  function closeDrawer() {
+    document.getElementById('navDrawer').classList.remove('open');
+    document.getElementById('hamburgerBtn').classList.remove('open');
   }
 </script>
 
