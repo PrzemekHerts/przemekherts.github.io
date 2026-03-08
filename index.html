@@ -254,6 +254,7 @@
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#progress">Progress</a>
+    <a href="#balance">Balance</a>
     <a href="#calendar">Calendar</a>
     <a href="#links">Links</a>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">
@@ -323,6 +324,14 @@
     </div>
   </section>
 
+  <!-- MUSCLE BALANCE -->
+  <section id="balance">
+    <div class="section-label">Muscle Balance &mdash; March 2026</div>
+    <div class="chart-outer">
+      <div class="chart-inner" id="balance-mount"></div>
+    </div>
+  </section>
+
   <!-- TRAINING CALENDAR -->
   <section id="calendar">
     <div class="section-label">Training Calendar &mdash; March 2026</div>
@@ -330,6 +339,8 @@
       <div id="calendar-mount"></div>
     </div>
   </section>
+
+
 
 
 
@@ -407,24 +418,24 @@
   };
 
   const sessions = [
-    { type:"Legs A", session:1, date:"02/03/2026", day:"Sun", exercises:[
+    { type:"Legs A", session:1, date:"02/03/2026", day:"Sun", bw:81.5, exercises:[
       { name:"BB Squats",      sets:[{w:62.5,r:6},{w:62.5,r:6},{w:50,r:10},{w:50,r:10}] },
       { name:"Walking Lunges", sets:[{w:12,r:12},{w:12,r:12},{w:12,r:12}] },
       { name:"Leg Curl",       sets:[{w:39,r:12},{w:42,r:12},{w:45,r:10}] },
       { name:"Calf Raises",    sets:[{w:45,r:15},{w:45,r:15},{w:45,r:14}] },
     ]},
-    { type:"Legs B", session:1, date:"02/03/2026", day:"Sun", exercises:[
+    { type:"Legs B", session:1, date:"02/03/2026", day:"Sun", bw:81.5, exercises:[
       { name:"BB Hip Thrusts", sets:[{w:70,r:12},{w:70,r:11},{w:70,r:10}] },
       { name:"RDLs",           sets:[{w:65,r:10},{w:65,r:9},{w:65,r:8}] },
     ]},
-    { type:"Pull", session:1, date:"03/03/2026", day:"Tue", exercises:[
+    { type:"Pull", session:1, date:"03/03/2026", day:"Tue", bw:81.2, exercises:[
       { name:"Pull-downs",   sets:[{w:50,r:12},{w:50,r:12},{w:50,r:12},{w:50,r:12}] },
       { name:"Cable Rows",   sets:[{w:22.5,r:15},{w:22.5,r:15},{w:19,r:15},{w:19,r:15}] },
       { name:"Kneeling PDs", sets:[{w:16.5,r:15},{w:16.5,r:15},{w:18.25,r:12}] },
       { name:"Bicep Curls",  sets:[{w:6,r:15},{w:8,r:7},{w:6,r:12},{w:6,r:12}] },
       { name:"Rear Delts",   sets:[{w:32,r:12},{w:25,r:15},{w:25,r:13},{w:25,r:11}] },
     ]},
-    { type:"Push", session:1, date:"04/03/2026", day:"Wed", exercises:[
+    { type:"Push", session:1, date:"04/03/2026", day:"Wed", bw:81.2, exercises:[
       { name:"Iso-Lat Bench",  sets:[{w:20.7,r:8},{w:20.7,r:8},{w:15.7,r:12},{w:15.7,r:11}] },
       { name:"Narrow Bench",   sets:[{w:16,r:12},{w:16,r:11},{w:14,r:12},{w:14,r:12}] },
       { name:"DB OHP",         sets:[{w:14,r:8},{w:14,r:7},{w:12,r:10}] },
@@ -432,9 +443,9 @@
       { name:"Tricep PDs",     sets:[{w:21.75,r:15},{w:23.5,r:10},{w:23.5,r:9}] },
       { name:"Face Pulls",     sets:[{w:13,r:20},{w:16.5,r:20},{w:18.25,r:20}] },
       { name:"Pec Flyes",      sets:[{w:52,r:12},{w:52,r:8},{w:32,r:18}] },
-      { name:"Assisted Dips",  sets:[{w:0,r:8},{w:0,r:7},{w:0,r:7}] },
+      { name:"Assisted Dips",  sets:[{w:45.2,r:8},{w:45.2,r:7},{w:45.2,r:7}] }, // BW 81.2 kg − 36 kg assist = 45.2 kg effective
     ]},
-    { type:"Legs B", session:2, date:"07/03/2026", day:"Sat", exercises:[
+    { type:"Legs B", session:2, date:"07/03/2026", day:"Sat", bw:80.2, exercises:[
       { name:"BB Hip Thrusts",   sets:[{w:70,r:12},{w:70,r:11},{w:65,r:11}] },
       { name:"RDLs",             sets:[{w:60,r:10},{w:60,r:10},{w:60,r:10}] },
       { name:"Glute Extensions", sets:[{w:0,r:15},{w:0,r:15},{w:8,r:11}] },
@@ -443,13 +454,13 @@
     ]},
   ];
 
-  function sessVol(exs)   { return Math.round(exs.reduce((s,e) => s+e.sets.reduce((a,x)=>a+x.w*x.r,0),0)); }
+  function sessVol(exs,bw) { return Math.round(exs.reduce((s,e) => s+e.sets.reduce((a,x)=>a+(x.w>0?x.w:bw)*x.r,0),0)); }
   function totalSets(exs) { return exs.reduce((s,e)=>s+e.sets.length,0); }
   function maxW(exs)      { return Math.max(...exs.flatMap(e=>e.sets.map(x=>x.w))); }
-  function exVol(sets)    { return Math.round(sets.reduce((s,x)=>s+x.w*x.r,0)); }
+  function exVol(sets,bw) { return Math.round(sets.reduce((s,x)=>s+(x.w>0?x.w:bw)*x.r,0)); }
   function norm(v,mn,mx)  { return mx===mn?50:Math.round(20+((v-mn)/(mx-mn))*80); }
 
-  const totalVol     = sessions.reduce((s,x)=>s+sessVol(x.exercises),0);
+  const totalVol     = sessions.reduce((s,x)=>s+sessVol(x.exercises,x.bw),0);
   const totalAllSets = sessions.reduce((s,x)=>s+totalSets(x.exercises),0);
   const totalAllExs  = sessions.reduce((s,x)=>s+x.exercises.length,0);
 
@@ -458,7 +469,7 @@
     const allSets = s.exercises.flatMap(e=>e.sets);
     if (!statsByTypeAcc[s.type]) statsByTypeAcc[s.type] = {volumeArr:[],setsArr:[],exsArr:[],maxWArr:[],repsArr:[]};
     const acc = statsByTypeAcc[s.type];
-    acc.volumeArr.push(sessVol(s.exercises));
+    acc.volumeArr.push(sessVol(s.exercises,s.bw));
     acc.setsArr.push(totalSets(s.exercises));
     acc.exsArr.push(s.exercises.length);
     acc.maxWArr.push(maxW(s.exercises));
@@ -524,7 +535,7 @@
               <td style="color:#475569;padding:9px 14px;font-family:'DM Mono',monospace">${s.date} ${s.day}</td>
               <td style="color:#64748b;padding:9px 14px;font-family:'DM Mono',monospace">${s.exercises.length}</td>
               <td style="color:#64748b;padding:9px 14px;font-family:'DM Mono',monospace">${totalSets(s.exercises)}</td>
-              <td style="color:${color};padding:9px 14px;font-family:'DM Mono',monospace;font-weight:600">${sessVol(s.exercises).toLocaleString()} kg</td>
+              <td style="color:${color};padding:9px 14px;font-family:'DM Mono',monospace;font-weight:600">${sessVol(s.exercises,s.bw).toLocaleString()} kg</td>
               <td style="color:#64748b;padding:9px 14px;font-family:'DM Mono',monospace">${maxW(s.exercises)} kg</td>
             </tr>`;
           }).join('')}
@@ -540,7 +551,7 @@
 
   const chartOverview = new Chart(document.getElementById('chartOverview'),{
     type:'bar',
-    data:{labels:sessions.map(s=>`${s.type} · ${s.day} ${s.date.slice(0,5)}`),datasets:[{data:sessions.map(s=>sessVol(s.exercises)),backgroundColor:sessions.map(s=>SESSION_COLORS[s.type]+'cc'),borderColor:sessions.map(s=>SESSION_COLORS[s.type]),borderWidth:1,borderRadius:6}]},
+    data:{labels:sessions.map(s=>`${s.type} · ${s.day} ${s.date.slice(0,5)}`),datasets:[{data:sessions.map(s=>sessVol(s.exercises,s.bw)),backgroundColor:sessions.map(s=>SESSION_COLORS[s.type]+'cc'),borderColor:sessions.map(s=>SESSION_COLORS[s.type]),borderWidth:1,borderRadius:6}]},
     options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>sessions[i[0].dataIndex].type+' · '+sessions[i[0].dataIndex].date,label:i=>' '+i.raw.toLocaleString()+' kg  ·  '+totalSets(sessions[i.dataIndex].exercises)+' sets'}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#475569'}},y:{grid:{color:'#0d1520'},border:{display:false},ticks:{color:'#475569',callback:v=>v.toLocaleString()}}}}
   });
 
@@ -549,11 +560,11 @@
     chartOverview.update();
   });
 
-  const exData = sessions.flatMap(s=>s.exercises.map(e=>({label:e.name,value:exVol(e.sets),type:s.type,session:`${s.type} S${s.session}`,maxW:Math.max(...e.sets.map(x=>x.w)),reps:e.sets.reduce((a,x)=>a+x.r,0)})));
+  const exData = sessions.flatMap(s=>s.exercises.map(e=>({label:e.name,value:exVol(e.sets,s.bw),type:s.type,session:`${s.type} S${s.session}`,maxW:Math.max(...e.sets.map(x=>x.w)),reps:e.sets.reduce((a,x)=>a+x.r,0)})));
   const chartExercises = new Chart(document.getElementById('chartExercises'),{
     type:'bar',
     data:{labels:exData.map(d=>d.label),datasets:[{data:exData.map(d=>d.value),backgroundColor:exData.map(d=>SESSION_COLORS[d.type]+'cc'),borderColor:exData.map(d=>SESSION_COLORS[d.type]),borderWidth:1,borderRadius:4}]},
-    options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>exData[i[0].dataIndex].session,label:i=>{const d=exData[i.dataIndex];return[' '+i.raw.toLocaleString()+' kg vol',' Max: '+d.maxW+' kg · '+d.reps+' reps']}}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#475569',maxRotation:35,minRotation:25}},y:{grid:{color:'#0d1520'},border:{display:false},ticks:{color:'#475569'}}}}
+    options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>exData[i[0].dataIndex].session,label:i=>{const d=exData[i.dataIndex];const wStr=d.maxW>0?' Max: '+d.maxW+' kg':' BW '+BW+' kg';return[' '+i.raw.toLocaleString()+' kg vol',wStr+' · '+d.reps+' reps']}}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#475569',maxRotation:35,minRotation:25}},y:{grid:{color:'#0d1520'},border:{display:false},ticks:{color:'#475569'}}}}
   });
 
   const radarMetrics=['Volume','Sets','Exercises','Max Weight','Avg Reps'];
@@ -751,5 +762,263 @@
   ReactDOM.createRoot(document.getElementById('calendar-mount')).render(<Calendar />);
 })();
 </script>
+
+<!-- MUSCLE BALANCE CHART -->
+<script type="text/babel">
+(function() {
+  const { useState, useEffect, useRef } = React;
+
+  /* ── MUSCLE GROUP VOLUME DATA ─────────────────────────────────────────────
+     Volumes derived from Session 1 data across all four session types.
+     Each muscle group mapped to its primary exercises + estimated sets/vol.
+     Push sessions → Chest, Front Delt, Triceps, Side Delt
+     Pull sessions → Back, Biceps, Rear Delt
+     Legs A        → Quads, Hamstrings (curl), Calves
+     Legs B        → Glutes, Hamstrings (RDL), Glutes/Hips
+  ─────────────────────────────────────────────────────────────────────────── */
+  const muscleData = [
+    // Push day exercises → muscle map
+    { muscle: "Chest",      sets: 14, vol: Math.round((20.7*8*2)+(20.7*8*2)+(15.7*12*2)+(15.7*11*2) + (16*12)+(16*11)+(14*12)+(14*12) + (52*12)+(52*8)+(32*18) + (45.2*8)+(45.2*7)+(45.2*7)), color: "#f97316" }, // +3 sets Assisted Dips
+    { muscle: "Triceps",    sets: 11, vol: Math.round((21.75*15)+(23.5*10)+(23.5*9) + (16*12)+(16*11)+(14*12)+(14*12) + (45.2*8)+(45.2*7)+(45.2*7)), color: "#f97316" }, // +3 sets Assisted Dips
+    { muscle: "Shoulders",  sets: 9,  vol: Math.round((14*8)+(14*7)+(12*10) + (4.25*20)+(5*8)+(4.25*17) + (13*20)+(16.5*20)+(18.25*20)), color: "#f97316" },
+    { muscle: "Back",       sets: 15, vol: Math.round((50*12*4) + (22.5*15*2)+(19*15*2) + (16.5*15*2)+(18.25*12)), color: "#38bdf8" },
+    { muscle: "Biceps",     sets: 4,  vol: Math.round((6*15)+(8*7)+(6*12)+(6*12)), color: "#38bdf8" },
+    { muscle: "Rear Delts", sets: 4,  vol: Math.round((32*12)+(25*15)+(25*13)+(25*11)), color: "#38bdf8" },
+    { muscle: "Quads",      sets: 7,  vol: Math.round((62.5*6*2)+(50*10*2) + (12*12*3)), color: "#4ade80" },
+    { muscle: "Hamstrings", sets: 6,  vol: Math.round((39*12)+(42*12)+(45*10) + (65*10)+(65*9)+(65*8)), color: "#a78bfa" },
+    { muscle: "Glutes",     sets: 7,  vol: Math.round((70*12)+(70*11)+(70*10) + (0*15*2)+(8*11)), color: "#a78bfa" },
+    { muscle: "Calves",     sets: 3,  vol: Math.round((45*15)+(45*15)+(45*14)), color: "#4ade80" },
+  ];
+
+  // Normalise volumes to 0–100 scale for the bar display
+  const maxVol = Math.max(...muscleData.map(m => m.vol));
+  const maxSets = Math.max(...muscleData.map(m => m.sets));
+  const data = muscleData.map(m => ({
+    ...m,
+    normVol:  Math.round((m.vol  / maxVol)  * 100),
+    normSets: Math.round((m.sets / maxSets) * 100),
+  }));
+
+  // Session type groupings for the legend
+  const groups = [
+    { label: "Push",   color: "#f97316", muscles: ["Chest","Triceps","Shoulders"] },
+    { label: "Pull",   color: "#38bdf8", muscles: ["Back","Biceps","Rear Delts"] },
+    { label: "Legs A", color: "#4ade80", muscles: ["Quads","Calves"] },
+    { label: "Legs B", color: "#a78bfa", muscles: ["Hamstrings","Glutes"] },
+  ];
+
+  // Radar chart drawn on canvas via Chart.js
+  function RadarChart({ dark }) {
+    const canvasRef = useRef(null);
+    const chartRef  = useRef(null);
+
+    useEffect(() => {
+      if (!canvasRef.current) return;
+      if (chartRef.current) { chartRef.current.destroy(); }
+
+      const textColor   = dark ? "#94a3b8" : "#475569";
+      const gridColor   = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.07)";
+      const pointColor  = dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
+
+      chartRef.current = new Chart(canvasRef.current, {
+        type: "radar",
+        data: {
+          labels: data.map(m => m.muscle),
+          datasets: [
+            {
+              label: "Volume (normalised)",
+              data: data.map(m => m.normVol),
+              backgroundColor: "rgba(56,189,248,0.12)",
+              borderColor:     "#38bdf8",
+              borderWidth: 2,
+              pointBackgroundColor: data.map(m => m.color),
+              pointBorderColor:     "transparent",
+              pointRadius: 5,
+              pointHoverRadius: 7,
+            },
+            {
+              label: "Sets (normalised)",
+              data: data.map(m => m.normSets),
+              backgroundColor: "rgba(167,139,250,0.08)",
+              borderColor:     "#a78bfa",
+              borderWidth: 2,
+              borderDash: [5,3],
+              pointBackgroundColor: data.map(m => m.color),
+              pointBorderColor:     "transparent",
+              pointRadius: 4,
+              pointHoverRadius: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          animation: { duration: 600 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: dark ? "#0d1520" : "#f8fafc",
+              titleColor:      dark ? "#f1f5f9" : "#0f172a",
+              bodyColor:       dark ? "#94a3b8" : "#334155",
+              borderColor:     dark ? "#1e293b" : "#e2e8f0",
+              borderWidth: 1,
+              padding: 10,
+              callbacks: {
+                afterBody: (items) => {
+                  const i = items[0].dataIndex;
+                  const m = data[i];
+                  return [`Sets: ${m.sets}`, `Volume: ${m.vol.toLocaleString()} kg·reps`];
+                }
+              }
+            },
+          },
+          scales: {
+            r: {
+              min: 0, max: 100,
+              ticks: { display: false },
+              grid:        { color: gridColor },
+              angleLines:  { color: gridColor },
+              pointLabels: {
+                color:    textColor,
+                font:     { family: "'DM Mono', monospace", size: 10 },
+              },
+            },
+          },
+        },
+      });
+
+      return () => { if (chartRef.current) chartRef.current.destroy(); };
+    }, [dark]);
+
+    return <canvas ref={canvasRef} style={{maxHeight:360}} />;
+  }
+
+  function BalanceChart() {
+    const [dark, setDark] = useState(!document.body.classList.contains('light'));
+    const [metric, setMetric] = useState('vol');
+
+    useEffect(() => {
+      const handler = (e) => setDark(!e.detail.light);
+      document.addEventListener('themechange', handler);
+      return () => document.removeEventListener('themechange', handler);
+    }, []);
+
+    const T = {
+      text1:   dark ? "#f1f5f9"  : "#0f172a",
+      text2:   dark ? "#94a3b8"  : "#334155",
+      text3:   dark ? "#64748b"  : "#475569",
+      border:  dark ? "#1e293b"  : "#e2e8f0",
+      surface: dark ? "rgba(255,255,255,0.03)" : "#f8fafc",
+      bar:     dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
+    };
+
+    const sorted = [...data].sort((a,b) =>
+      metric === 'vol' ? b.vol - a.vol : b.sets - a.sets
+    );
+    const maxVal = metric === 'vol'
+      ? Math.max(...sorted.map(m => m.vol))
+      : Math.max(...sorted.map(m => m.sets));
+
+    return (
+      <div style={{padding:"24px 28px", fontFamily:"'DM Sans', sans-serif"}}>
+
+        {/* Header row */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:12}}>
+          <div>
+            <div style={{color:T.text1,fontSize:14,fontWeight:600,marginBottom:2}}>Muscle Balance</div>
+            <div style={{color:T.text3,fontSize:11,fontFamily:"'DM Mono',monospace"}}>Relative training stimulus per muscle group · Session 1</div>
+          </div>
+          {/* Metric toggle */}
+          <div style={{display:"flex",gap:6}}>
+            {[['vol','Volume'],['sets','Sets']].map(([k,label]) => (
+              <button key={k} onClick={()=>setMetric(k)} style={{
+                padding:"4px 12px",borderRadius:20,border:`1px solid ${k===metric ? 'transparent' : T.border}`,
+                background: k===metric ? '#38bdf8' : 'transparent',
+                color:      k===metric ? '#020817' : T.text3,
+                fontSize:10,fontFamily:"'DM Mono',monospace",textTransform:"uppercase",letterSpacing:1,cursor:"pointer",transition:"all 0.2s"
+              }}>{label}</button>
+            ))}
+          </div>
+        </div>
+
+        {/* Group legend */}
+        <div style={{display:"flex",gap:16,marginBottom:24,flexWrap:"wrap"}}>
+          {groups.map(g => (
+            <div key={g.label} style={{display:"flex",alignItems:"center",gap:6}}>
+              <div style={{width:8,height:8,borderRadius:2,background:g.color,flexShrink:0}} />
+              <span style={{color:T.text3,fontSize:10,fontFamily:"'DM Mono',monospace",textTransform:"uppercase",letterSpacing:0.8}}>{g.label}</span>
+            </div>
+          ))}
+          <div style={{display:"flex",alignItems:"center",gap:6,marginLeft:"auto"}}>
+            <div style={{width:24,height:2,background:"#38bdf8",flexShrink:0}} />
+            <span style={{color:T.text3,fontSize:10,fontFamily:"'DM Mono',monospace"}}>Volume</span>
+            <div style={{width:24,height:2,background:"#a78bfa",borderTop:"2px dashed #a78bfa",flexShrink:0,marginLeft:8}} />
+            <span style={{color:T.text3,fontSize:10,fontFamily:"'DM Mono',monospace"}}>Sets</span>
+          </div>
+        </div>
+
+        {/* Two-column layout: bar chart left, radar right */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32,alignItems:"start"}}>
+
+          {/* Horizontal bar chart */}
+          <div>
+            {sorted.map(m => {
+              const val    = metric === 'vol' ? m.vol  : m.sets;
+              const pct    = Math.round((val / maxVal) * 100);
+              const dispVal = metric === 'vol'
+                ? `${(val/1000).toFixed(1)}k`
+                : `${val}`;
+              return (
+                <div key={m.muscle} style={{marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+                    <span style={{color:T.text2,fontSize:11,fontWeight:500}}>{m.muscle}</span>
+                    <span style={{color:T.text3,fontSize:10,fontFamily:"'DM Mono',monospace"}}>
+                      {metric==='vol' ? `${m.vol.toLocaleString()} kg·reps` : `${m.sets} sets`}
+                    </span>
+                  </div>
+                  <div style={{height:6,borderRadius:3,background:T.bar,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${pct}%`,borderRadius:3,background:m.color,transition:"width 0.5s ease"}} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Radar chart */}
+          <div>
+            <RadarChart dark={dark} />
+          </div>
+        </div>
+
+        {/* Summary chips */}
+        <div style={{display:"flex",gap:8,marginTop:20,flexWrap:"wrap"}}>
+          {groups.map(g => {
+            const groupMuscles = data.filter(m => g.muscles.includes(m.muscle));
+            const groupVol  = groupMuscles.reduce((s,m)=>s+m.vol,0);
+            const groupSets = groupMuscles.reduce((s,m)=>s+m.sets,0);
+            return (
+              <div key={g.label} style={{
+                padding:"6px 14px",borderRadius:8,
+                border:`1px solid ${g.color}30`,
+                background:`${g.color}08`,
+              }}>
+                <div style={{color:g.color,fontSize:10,fontFamily:"'DM Mono',monospace",textTransform:"uppercase",letterSpacing:0.8,marginBottom:2}}>{g.label}</div>
+                <div style={{color:T.text2,fontSize:11}}>{groupSets} sets &middot; {Math.round(groupVol/1000)}k vol</div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{marginTop:12,color:T.text3,fontSize:9,fontFamily:"'DM Mono',monospace",textAlign:"center"}}>
+          Volume = Σ(weight × reps) across all sets · Toggle above to switch metric
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('balance-mount')).render(<BalanceChart />);
+})();
+</script>
+
 </body>
 </html>
