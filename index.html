@@ -615,7 +615,7 @@
           {l:'Sessions',     v:sessions.length},
         ].map(s=>`<div style="background:rgba(255,255,255,0.02);border:1px solid #1e293b;border-radius:10px;padding:10px 12px;text-align:center">
           <div style="color:#f1f5f9;font-size:17px;font-weight:700;font-family:'DM Mono',monospace">${s.v}</div>
-          <div style="color:#334155;font-size:9px;margin-top:2px;text-transform:uppercase;letter-spacing:1px">${s.l}</div>
+          <div style="color:#64748b;font-size:9px;margin-top:2px;text-transform:uppercase;letter-spacing:1px">${s.l}</div>
         </div>`).join('')}
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
@@ -624,14 +624,14 @@
           return `<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.02);border:1px solid ${color}30;border-radius:8px;padding:6px 11px">
             <div style="width:7px;height:7px;border-radius:50%;background:${color};flex-shrink:0"></div>
             <div><div style="color:${color};font-size:11px;font-weight:600">${type}</div>
-            <div style="color:#334155;font-size:9px;font-family:'DM Mono',monospace">${s.volume.toLocaleString()} kg &middot; ${s.sets} sets</div></div>
+            <div style="color:#64748b;font-size:9px;font-family:'DM Mono',monospace">${s.volume.toLocaleString()} kg &middot; ${s.sets} sets</div></div>
           </div>`;
         }).join('')}
       </div>
       <div style="display:flex;gap:4px;margin-bottom:16px;background:rgba(255,255,255,0.02);border:1px solid #1e293b;border-radius:10px;padding:4px" id="prog-tabs">
         <button onclick="switchProgTab('overview',this)" class="ptab active" style="flex:1;background:rgba(148,163,184,0.1);border:1px solid #475569;border-radius:7px;padding:6px 0;cursor:pointer;color:#94a3b8;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.8px">Overview</button>
-        <button onclick="switchProgTab('exercises',this)" class="ptab" style="flex:1;background:transparent;border:1px solid transparent;border-radius:7px;padding:6px 0;cursor:pointer;color:#334155;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.8px">By Exercise</button>
-        <button onclick="switchProgTab('radar',this)" class="ptab" style="flex:1;background:transparent;border:1px solid transparent;border-radius:7px;padding:6px 0;cursor:pointer;color:#334155;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.8px">Session Shape</button>
+        <button onclick="switchProgTab('exercises',this)" class="ptab" style="flex:1;background:transparent;border:1px solid transparent;border-radius:7px;padding:6px 0;cursor:pointer;color:#64748b;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.8px">By Exercise</button>
+        <button onclick="switchProgTab('radar',this)" class="ptab" style="flex:1;background:transparent;border:1px solid transparent;border-radius:7px;padding:6px 0;cursor:pointer;color:#64748b;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.8px">Session Shape</button>
       </div>
     </div>
     <div style="padding:0 20px 20px">
@@ -642,14 +642,14 @@
     <div style="border-top:1px solid #0d1520;overflow:hidden">
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="border-bottom:1px solid #0d1520">
-          ${["Type","Date","Exercises","Sets","Volume","Max Weight"].map(h=>`<th style="color:#1e3a5f;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;font-weight:500;padding:8px 14px;text-align:left">${h}</th>`).join('')}
+          ${["Type","Date","Exercises","Sets","Volume","Max Weight"].map(h=>`<th style="color:#64748b;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;font-weight:500;padding:8px 14px;text-align:left">${h}</th>`).join('')}
         </tr></thead>
         <tbody>
           ${sessions.map((s,i)=>{
             const color=SESSION_COLORS[s.type];
             return `<tr style="border-bottom:1px solid #0a1020;background:${i%2===1?'rgba(255,255,255,0.01)':'transparent'}">
               <td style="padding:9px 14px"><span style="color:${color};font-weight:600;font-size:11px">${s.type}</span></td>
-              <td style="color:#475569;padding:9px 14px;font-family:'DM Mono',monospace">${s.date} ${s.day}</td>
+              <td style="color:#94a3b8;padding:9px 14px;font-family:'DM Mono',monospace">${s.date} ${s.day}</td>
               <td style="color:#64748b;padding:9px 14px;font-family:'DM Mono',monospace">${s.exercises.length}</td>
               <td style="color:#64748b;padding:9px 14px;font-family:'DM Mono',monospace">${totalSets(s.exercises)}</td>
               <td style="color:${color};padding:9px 14px;font-family:'DM Mono',monospace;font-weight:600">${sessVol(s.exercises,s.bw).toLocaleString()} kg</td>
@@ -661,7 +661,7 @@
     </div>
   `;
 
-  Chart.defaults.color = '#475569';
+  Chart.defaults.color = '#94a3b8';
   Chart.defaults.font.family = "'DM Mono', monospace";
   Chart.defaults.font.size = 10;
   const tip = {backgroundColor:'rgba(5,12,26,0.97)',borderWidth:1,titleColor:'#64748b',titleFont:{family:"'DM Mono',monospace",size:10},bodyColor:'#94a3b8',bodyFont:{family:"'DM Mono',monospace",size:11},padding:10};
@@ -669,7 +669,7 @@
   const chartOverview = new Chart(document.getElementById('chartOverview'),{
     type:'bar',
     data:{labels:sessions.map(s=>`${s.type} · ${s.day} ${s.date.slice(0,5)}`),datasets:[{data:sessions.map(s=>sessVol(s.exercises,s.bw)),backgroundColor:sessions.map(s=>SESSION_COLORS[s.type]+'cc'),borderColor:sessions.map(s=>SESSION_COLORS[s.type]),borderWidth:1,borderRadius:6}]},
-    options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>sessions[i[0].dataIndex].type+' · '+sessions[i[0].dataIndex].date,label:i=>' '+i.raw.toLocaleString()+' kg  ·  '+totalSets(sessions[i.dataIndex].exercises)+' sets'}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#475569'}},y:{grid:{color:'#0d1520'},border:{display:false},ticks:{color:'#475569',callback:v=>v.toLocaleString()}}}}
+    options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>sessions[i[0].dataIndex].type+' · '+sessions[i[0].dataIndex].date,label:i=>' '+i.raw.toLocaleString()+' kg  ·  '+totalSets(sessions[i.dataIndex].exercises)+' sets'}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#94a3b8'}},y:{grid:{color:'#1e293b'},border:{display:false},ticks:{color:'#94a3b8',callback:v=>v.toLocaleString()}}}}
   });
 
   document.addEventListener('themechange', e => {
@@ -681,7 +681,7 @@
   const chartExercises = new Chart(document.getElementById('chartExercises'),{
     type:'bar',
     data:{labels:exData.map(d=>d.label),datasets:[{data:exData.map(d=>d.value),backgroundColor:exData.map(d=>SESSION_COLORS[d.type]+'cc'),borderColor:exData.map(d=>SESSION_COLORS[d.type]),borderWidth:1,borderRadius:4}]},
-    options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>exData[i[0].dataIndex].session,label:i=>{const d=exData[i.dataIndex];const wStr=d.maxW>0?' Max: '+d.maxW+' kg':' BW '+BW+' kg';return[' '+i.raw.toLocaleString()+' kg vol',wStr+' · '+d.reps+' reps']}}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#475569',maxRotation:35,minRotation:25}},y:{grid:{color:'#0d1520'},border:{display:false},ticks:{color:'#475569'}}}}
+    options:{responsive:true,plugins:{legend:{display:false},tooltip:{...tip,callbacks:{title:i=>exData[i[0].dataIndex].session,label:i=>{const d=exData[i.dataIndex];const wStr=d.maxW>0?' Max: '+d.maxW+' kg':' BW '+BW+' kg';return[' '+i.raw.toLocaleString()+' kg vol',wStr+' · '+d.reps+' reps']}}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#94a3b8',maxRotation:35,minRotation:25}},y:{grid:{color:'#1e293b'},border:{display:false},ticks:{color:'#94a3b8'}}}}
   });
 
   const radarMetrics=['Volume','Sets','Exercises','Max Weight','Avg Reps'];
@@ -693,7 +693,7 @@
   const chartRadar = new Chart(document.getElementById('chartRadar'),{
     type:'radar',
     data:{labels:radarMetrics,datasets:types.filter(t=>rawStats[t]).map(type=>({label:type,data:normData[type],borderColor:SESSION_COLORS[type],backgroundColor:SESSION_COLORS[type]+'20',borderWidth:2,pointBackgroundColor:SESSION_COLORS[type],pointRadius:3}))},
-    options:{responsive:true,plugins:{legend:{labels:{color:'#475569',font:{family:"'DM Mono',monospace",size:10},boxWidth:10,padding:14}},tooltip:{...tip}},scales:{r:{min:0,max:100,grid:{color:'#1e293b'},angleLines:{color:'#1e293b'},pointLabels:{color:'#475569',font:{family:"'DM Mono',monospace",size:10}},ticks:{display:false}}}}
+    options:{responsive:true,plugins:{legend:{labels:{color:'#94a3b8',font:{family:"'DM Mono',monospace",size:10},boxWidth:10,padding:14}},tooltip:{...tip}},scales:{r:{min:0,max:100,grid:{color:'#1e293b'},angleLines:{color:'#1e293b'},pointLabels:{color:'#94a3b8',font:{family:"'DM Mono',monospace",size:10}},ticks:{display:false}}}}
   });
 
   document.addEventListener('themechange', e => {
@@ -706,7 +706,7 @@
   });
 
   window.switchProgTab = function(name, btn) {
-    document.querySelectorAll('.ptab').forEach(t=>{t.style.background='transparent';t.style.borderColor='transparent';t.style.color='#334155';});
+    document.querySelectorAll('.ptab').forEach(t=>{t.style.background='transparent';t.style.borderColor='transparent';t.style.color='#64748b';});
     btn.style.background='rgba(148,163,184,0.1)';btn.style.borderColor='#475569';btn.style.color='#94a3b8';
     ['overview','exercises','radar'].forEach(k=>{document.getElementById('ppanel-'+k).style.display=k===name?'block':'none';});
   };
@@ -765,7 +765,7 @@
     const sessionColors = isLight ? lightColors : darkColors;
     const T = isLight
       ? {card:"#ffffff", cardBorder:"#e2e8f0", val:"#0f172a", lbl:"#94a3b8", grid:"#f1f5f9", gridSub:"#e2e8f0", dayFut:"#94a3b8", dayPast:"#cbd5e1", restBorder:"#e2e8f0", restText:"#94a3b8", noteText:"#64748b", planned:"#94a3b8", todayBg:"rgba(234,88,12,0.06)"}
-      : {card:"rgba(255,255,255,0.02)", cardBorder:"#1e293b", val:"#f1f5f9", lbl:"#334155", grid:"#0a1020", gridSub:"#0d1520", dayFut:"#1e3a5f", dayPast:"#334155", restBorder:"#1e293b", restText:"#334155", noteText:"#334155", planned:"#1e3a5f", todayBg:"rgba(247,115,22,0.06)"};
+      : {card:"rgba(255,255,255,0.02)", cardBorder:"#1e293b", val:"#f1f5f9", lbl:"#64748b", grid:"#0a1020", gridSub:"#1e293b", dayFut:"#64748b", dayPast:"#475569", restBorder:"#1e293b", restText:"#64748b", noteText:"#64748b", planned:"#64748b", todayBg:"rgba(247,115,22,0.06)"};
 
     const selSessions = sel ? sessions[sel] : null;
     const totalVol = Object.values(sessions).flat().reduce((s,x)=>s+x.volume,0);
