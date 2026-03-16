@@ -163,8 +163,7 @@
       --text-4:    #94a3b8;
       --pull:      #0ea5e9;
       --push:      #ea580c;
-      --legs-a:    #16a34a;
-      --legs-b:    #7c3aed;
+      --legs:     #7c3aed;
     }
     body.light nav { background: rgba(248,250,252,0.9); }
     body.light .hero-name { background: linear-gradient(135deg, #0f172a 40%, #64748b); -webkit-background-clip: text; background-clip: text; }
@@ -255,8 +254,7 @@
     }
     .tag.pull  { border-color: var(--pull)30;  color: var(--pull);   background: rgba(56,189,248,0.05); }
     .tag.push  { border-color: var(--push)30;  color: var(--push);   background: rgba(249,115,22,0.05); }
-    .tag.legsa { border-color: var(--legs-a)30; color: var(--legs-a); background: rgba(74,222,128,0.05); }
-    .tag.legsb { border-color: var(--legs-b)30; color: var(--legs-b); background: rgba(167,139,250,0.05); }
+    .tag.legs  { border-color: var(--legs)30;  color: var(--legs);  background: rgba(167,139,250,0.05); }
 
     /* ── LINKS ── */
     .links-grid {
@@ -412,8 +410,7 @@
     <div class="about-tags">
       <span class="tag pull">Pull Day</span>
       <span class="tag push">Push Day</span>
-      <span class="tag legsa">Legs A</span>
-      <span class="tag legsb">Legs B</span>
+      <span class="tag legs">Legs</span>
       <span class="tag">St Albans</span>
       <span class="tag">PPL</span>
       <span class="tag">Hypertrophy</span>
@@ -511,15 +508,13 @@
     (t==="Legs A"||t==="Legs B"||t==="Legs"||t==="Lower A"||t==="Lower B") ? "Legs" : t;
 
   const sessions = [
-    { type:"Legs A", session:1, date:"02/03/2026", day:"Sun", bw:81.5, exercises:[
+    { type:"Legs", session:1, date:"02/03/2026", day:"Sun", bw:81.5, exercises:[
+      { name:"BB Hip Thrusts", sets:[{w:70,r:12},{w:70,r:11},{w:70,r:10}] },
+      { name:"RDLs",           sets:[{w:65,r:10},{w:65,r:9},{w:65,r:8}] },
       { name:"BB Squats",      sets:[{w:62.5,r:6},{w:62.5,r:6},{w:50,r:10},{w:50,r:10}] },
       { name:"Walking Lunges", sets:[{w:12,r:12},{w:12,r:12},{w:12,r:12}] },
       { name:"Leg Curl",       sets:[{w:39,r:12},{w:42,r:12},{w:45,r:10}] },
       { name:"Calf Raises",    sets:[{w:45,r:15},{w:45,r:15},{w:45,r:14}] },
-    ]},
-    { type:"Legs B", session:1, date:"02/03/2026", day:"Sun", bw:81.5, exercises:[
-      { name:"BB Hip Thrusts", sets:[{w:70,r:12},{w:70,r:11},{w:70,r:10}] },
-      { name:"RDLs",           sets:[{w:65,r:10},{w:65,r:9},{w:65,r:8}] },
     ]},
     { type:"Pull", session:1, date:"03/03/2026", day:"Tue", bw:81.2, exercises:[
       { name:"Pull-downs",   sets:[{w:50,r:12},{w:50,r:12},{w:50,r:12},{w:50,r:12}] },
@@ -735,23 +730,22 @@
      Each muscle group mapped to its primary exercises across all logged sessions.
      Push sessions → Chest, Front Delt, Triceps, Side Delt
      Pull sessions → Back, Biceps, Rear Delt
-     Legs A        → Quads, Hamstrings (curl), Calves
-     Legs B        → Glutes, Hamstrings (RDL), Glutes/Hips
+     Legs          → Glutes, Hamstrings, Quads, Calves
   ─────────────────────────────────────────────────────────────────────────── */
   const muscleData = [
     // Computed from all 9 sessions (primary full + secondary 0.5×) — updated 16 Mar 2026
-    { muscle: "Shoulders",  sets: 34.0, primary: 18.0, secondary: 16.0, color: "#fb923c" },
-    { muscle: "Chest",      sets: 31.5, primary: 31.5, secondary:  0.0, color: "#f97316" },
-    { muscle: "Triceps",    sets: 25.0, primary: 17.5, secondary:  7.5, color: "#fdba74" },
-    { muscle: "Back",       sets: 24.2, primary: 22.0, secondary:  2.2, color: "#38bdf8" },
-    { muscle: "Glutes",     sets: 21.2, primary: 12.0, secondary:  9.2, color: "#a78bfa" },
-    { muscle: "Rear Delts", sets: 18.0, primary: 16.0, secondary:  2.0, color: "#bae6fd" },
-    { muscle: "Hamstrings", sets: 17.5, primary: 12.0, secondary:  5.5, color: "#c4b5fd" },
-    { muscle: "Biceps",     sets: 17.0, primary:  8.0, secondary:  9.0, color: "#7dd3fc" },
-    { muscle: "Quads",      sets: 16.0, primary: 16.0, secondary:  0.0, color: "#4ade80" },
-    { muscle: "Calves",     sets:  6.0, primary:  6.0, secondary:  0.0, color: "#86efac" },
-    { muscle: "Core",       sets:  6.0, primary:  6.0, secondary:  0.0, color: "#fbbf24" },
-  ];;
+    { muscle: "Shoulders",  sets: 34.0, primary: 18.0, secondary: 16.0, vol:  5903, color: "#fb923c" },
+    { muscle: "Chest",      sets: 31.5, primary: 31.5, secondary:  0.0, vol: 10034, color: "#f97316" },
+    { muscle: "Triceps",    sets: 25.0, primary: 17.5, secondary:  7.5, vol:  5585, color: "#fdba74" },
+    { muscle: "Back",       sets: 24.2, primary: 22.0, secondary:  2.2, vol:  9740, color: "#38bdf8" },
+    { muscle: "Glutes",     sets: 21.2, primary: 12.0, secondary:  9.2, vol: 14318, color: "#a78bfa" },
+    { muscle: "Rear Delts", sets: 18.0, primary: 16.0, secondary:  2.0, vol:  5980, color: "#bae6fd" },
+    { muscle: "Hamstrings", sets: 17.5, primary: 12.0, secondary:  5.5, vol: 11172, color: "#c4b5fd" },
+    { muscle: "Biceps",     sets: 17.0, primary:  8.0, secondary:  9.0, vol:  4125, color: "#7dd3fc" },
+    { muscle: "Quads",      sets: 16.0, primary: 16.0, secondary:  0.0, vol: 12034, color: "#4ade80" },
+    { muscle: "Calves",     sets:  6.0, primary:  6.0, secondary:  0.0, vol:  4050, color: "#86efac" },
+    { muscle: "Core",       sets:  6.0, primary:  6.0, secondary:  0.0, vol:    60, color: "#fbbf24" },
+  ];
 
   // Normalise volumes to 0–100 scale for the bar display
   const maxVol = Math.max(...muscleData.map(m => m.vol));
